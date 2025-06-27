@@ -160,7 +160,6 @@ def resize_image(image_path, resize_to, done=None):
         os.remove(image_path)
         os.rename(resized_image_path, image_path)
 
-        logger.info("Resized {} to {}x{}".format(image_path, resized_width, resized_height))
     except (IOError, ValueError, struct.error, Image.DecompressionBombError) as e:
         logger.warning("Cannot resize {}: {}.".format(image_path, str(e)))
         if done is not None:
@@ -950,7 +949,7 @@ class Task(models.Model):
             logger.warning("{} connection/timeout error: {}. We'll try reprocessing at the next tick.".format(self, str(e)))
         except TaskInterruptedException as e:
             # Task was interrupted during image resize / upload
-            logger.warning("{} interrupted".format(self, str(e)))
+            logger.warning("{} interrupted: {}".format(self, str(e)))
 
     def extract_assets_and_complete(self):
         """
